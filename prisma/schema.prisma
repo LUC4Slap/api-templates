@@ -15,32 +15,34 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  document String @unique
-  compra Compra[]
+  id        Int     @id @default(autoincrement())
+  name      String
+  email     String  @unique
+  document  String  @unique
+  password  String
+  compra    Compra[]
 }
 
 model Template {
-  id Int @id @default(autoincrement())
-  nome String
-  descricao String
-  valor Decimal
-  autor String
+  id           Int          @id @default(autoincrement())
+  nome         String
+  descricao    String
+  valor        Decimal
+  autor        String
+  compraId     Int?         // Chave estrangeira opcional
+  compra       Compra?      @relation(fields: [compraId], references: [id])
   tecnologias  Tecnologia[]
-  compra Compra[]
 }
 
 model Tecnologia {
-  id Int @id @default(autoincrement())
-  nome String
-  templates   Template[]
+  id         Int         @id @default(autoincrement())
+  nome       String
+  templates  Template[]
 }
 
 model Compra {
-  id Int @id @default(autoincrement())
-  valor Decimal
-  usuario User[]
-  template Template[]
+  id       Int     @id @default(autoincrement())
+  valor    Decimal
+  usuarios User[]
+  templates Template[]
 }

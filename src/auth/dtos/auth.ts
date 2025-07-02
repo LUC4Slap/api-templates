@@ -2,7 +2,7 @@ export interface SignupDto {
   name: string;
   email: string;
   password: string;
-  cpf: string;
+  document: string;
 }
 
 export interface SigninDto {
