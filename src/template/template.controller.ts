@@ -23,17 +23,18 @@ export class TemplateController {
     return this.templateService.create(createTemplateDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.templateService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.templateService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -42,6 +43,7 @@ export class TemplateController {
     return this.templateService.update(+id, updateTemplateDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.templateService.remove(+id);
