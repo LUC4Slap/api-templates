@@ -30,12 +30,10 @@ export class WebhookService {
         this.logger.log(`Processando Webhook ID: ${webhook._id}`);
 
         const tipoEvento = webhook.payload?.action || webhook.payload?.event;
-        const idPagamento = webhook.payload?.data?.id || webhook.payload?.id;
+        const idPagamento = webhook.payload?.data?.order_id || webhook.payload?.id;
 
-        // 🔥 Aqui você faz o processamento real, ex: consultar status do pagamento
         await this.simularProcessamento(tipoEvento, idPagamento);
 
-        // Marca como processado
         webhook.processed = true;
         await webhook.save();
 
@@ -51,7 +49,7 @@ export class WebhookService {
       `Simulando processamento do evento: ${tipoEvento} para pagamento ${idPagamento}`,
     );
 
-    // Aqui você consultaria a API do Mercado Pago, atualizaria o pedido no Postgres, etc.
+    // TODO: LOGICA PARA PESQUISAR NA API DO MERCADO PAGO PARA VALIDAR SE O PAGAMENTO FOI APROVADO
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }

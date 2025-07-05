@@ -20,8 +20,8 @@ export class WebhookController {
     this.logger.debug('Payload:', JSON.stringify(payload));
     await this.webhookService.salvarWebhook(payload, headers);
 
-    const tipoEvento = payload?.action;
-    const idPagamento = payload?.data?.id;
+    const tipoEvento = payload?.event;
+    const idPagamento = payload?.data?.order_id;
 
     this.logger.log(
       `Tipo de evento: ${tipoEvento}, Pagamento ID: ${idPagamento}`,
