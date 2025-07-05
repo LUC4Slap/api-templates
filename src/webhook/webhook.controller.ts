@@ -6,16 +6,19 @@ import {
   HttpCode,
   Logger,
 } from '@nestjs/common';
+import { WebhookService } from './webhook.service';
 
 @Controller('webhook')
 export class WebhookController {
   private readonly logger = new Logger(WebhookController.name);
+  constructor(private webhookService: WebhookService) {}
 
   @Post()
   @HttpCode(200)
   async handleWebhook(@Body() payload: any, @Headers() headers: any) {
     this.logger.log('Webhook recebido do Mercado Pago');
     this.logger.debug('Payload:', JSON.stringify(payload));
+    await this.webhookService.salvarWebhook(payload, headers);
 
     const tipoEvento = payload?.action;
     const idPagamento = payload?.data?.id;
@@ -24,20 +27,6 @@ export class WebhookController {
       `Tipo de evento: ${tipoEvento}, Pagamento ID: ${idPagamento}`,
     );
 
-    if (tipoEvento === 'payment.updated' || tipoEvento === 'payment.created') {
-      // Aqui você pode consultar o status do pagamento via API do Mercado Pago
-      await this.processarPagamento(idPagamento);
-    }
-
     return { mensagem: 'Webhook Mercado Pago recebido' };
-  }
-
-  private async processarPagamento(idPagamento: string) {
-    this.logger.log(`Consultando e processando pagamento: ${idPagamento}`);
-
-    // Você normalmente faz uma requisição para a API do Mercado Pago aqui
-    // para buscar o status real do pagamento e atualizar seu banco
-
-    // Exemplo: await this.pagamentoService.atualizarStatusPedido(...);
   }
 }
