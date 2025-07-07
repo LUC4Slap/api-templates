@@ -30,7 +30,8 @@ export class WebhookService {
         this.logger.log(`Processando Webhook ID: ${webhook._id}`);
 
         const tipoEvento = webhook.payload?.action || webhook.payload?.event;
-        const idPagamento = webhook.payload?.data?.order_id || webhook.payload?.id;
+        const idPagamento =
+          webhook.payload?.data?.order_id || webhook.payload?.id;
 
         await this.simularProcessamento(tipoEvento, idPagamento);
 

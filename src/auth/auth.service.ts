@@ -33,7 +33,7 @@ export class AuthService {
       },
     });
 
-    const payload = { sub: user.id, username: user.name };
+    const payload = { sub: user.id, username: user.name, email: user.email };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -53,10 +53,22 @@ export class AuthService {
 
     if (!isPasswordValid)
       throw new UnauthorizedException('Email ou senha invalidos');
-    const payload = { sub: user.id, username: user.name };
+    const payload = { sub: user.id, username: user.name, email: user.email };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async infosUser(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      include: {
+        compra: true,
+      },
+    });
+    return user;
   }
 }
